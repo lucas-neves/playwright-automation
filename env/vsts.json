@@ -1,5 +1,5 @@
 {
-  "userToken": "VGVjaDRIdW1hbnM6NnB0Z3kyYXIzYnBhYWo0d2NrdmhqcmN6NzZkdnJicjJwb3d0dWpma2ZzaXFhZjJvaXBycQ==",
+  "userToken": "token",
   "testPlanId": 7917,
   "suiteId": 7918,
   "baseApiUrl": "https://dev.azure.com/company/company/_apis/",
