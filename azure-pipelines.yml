@@ -1,0 +1,87 @@
+trigger:
+  batch: true
+  branches:
+    include:
+      - poc-playwright
+      - refs/tags/poc-playwright
+
+parameters:
+  - name: enableChrome
+    displayName: Test in Chrome
+    type: boolean
+    default: true
+
+  - name: enableFirefox
+    displayName: Test in Firefox
+    type: boolean
+    default: false
+
+  - name: whereRun
+    displayName: Where run?
+    type: string
+    default: qa
+    values:
+      - qa
+      - staging
+
+  - name: testsRun
+    displayName: Which tests will run?
+    type: string
+    default: '@tabulacoes'
+    values:
+      - '@healthCheck'
+      - '@smokeTest'
+      - '@regression'
+      - '@tabulacoes'
+      - '@mensagensAutomaticas'
+
+variables:
+  - name: enableChrome
+    ${{ if eq( parameters['enableChrome'], 'True' ) }}:
+      value: "--project=chromium"
+  - name: enableFirefox
+    ${{ if eq( parameters['enableFirefox'], 'True' ) }}:
+      value: "--project=firefox"
+  - name: whereRun
+    value: ${{ parameters.whereRun }}
+  - name: testsRun
+    value: ${{ parameters.testsRun }}
+  
+stages:
+  - stage: 'Agent_1'
+    displayName: 'Run Real Customer tests'
+    jobs:
+    - deployment: Run_E2E_Tests
+      pool:
+        vmImage: ubuntu-20.04
+      container: mcr.microsoft.com/playwright:v1.27.0-focal
+      environment: testing
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            - checkout: self
+            - task: Bash@3
+              displayName: 'Run Playwright tests'
+              inputs:
+                workingDirectory: '$(System.DefaultWorkingDirectory)'
+                targetType: 'inline'
+                failOnStderr: false
+                script: |
+                  echo The current branch is - $(Build.SourceBranchName)
+                  npm install
+                  echo npx cross-env test_env=$(whereRun) CI=true npx playwright test --grep $(testsRun) $(enableChrome) $(enableFirefox)
+                  npx cross-env test_env=$(whereRun) CI=true npx playwright test --grep $(testsRun) $(enableChrome) $(enableFirefox)
+            - task: PublishTestResults@2
+              inputs:
+                searchFolder: '$(System.DefaultWorkingDirectory)/test-results'
+                testResultsFormat: 'JUnit'
+                testResultsFiles: 'e2e-junit-results.xml' 
+                mergeTestResults: true
+                failTaskOnFailedTests: true
+                publishRunAttachments: true
+                testRunTitle: 'RealCustomer - Playwright Automated Tests'
+            - task: PublishPipelineArtifact@1
+              inputs:
+                targetPath: '$(System.DefaultWorkingDirectory)/playwright-report'
+                artifactName: 'report'

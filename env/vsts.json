@@ -1,0 +1,13 @@
+{
+  "userToken": "VGVjaDRIdW1hbnM6NnB0Z3kyYXIzYnBhYWo0d2NrdmhqcmN6NzZkdnJicjJwb3d0dWpma2ZzaXFhZjJvaXBycQ==",
+  "testPlanId": 7917,
+  "suiteId": 7918,
+  "baseApiUrl": "https://dev.azure.com/company/company/_apis/",
+  "routeGetTestPlan": "testplan/plans/{0}/Suites/{1}/TestCase?api-version=6.1-preview.3",
+  "routePostRun": "test/runs?api-version=6.1-preview.3",
+  "routePostTestResult": "test/Runs/{0}/results?api-version=5.0",
+  "routePatchRunResult": "test/Runs/{0}?api-version=5.0",
+  "routePostRunAttachment": "test/Runs/{0}/attachments?api-version=7.1-preview.1",
+  "e2eTestPath": "cypress/e2e/{0}.spec.js",
+  "apiTestPath": "cypress/api/{0}.spec.js"
+}

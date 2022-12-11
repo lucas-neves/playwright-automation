@@ -1,0 +1,31 @@
+{
+  "name": "playwright-automation",
+  "version": "1.0.0",
+  "description": "TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project.",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint .",
+    "test:qa": "cross-env test_env=qa AZURE=true npx playwright test --grep @tabulacoes --headed --project=chromium",
+    "test:staging": "cross-env test_env=staging npx playwright test --grep @regression --project=chromium",
+    "test:file": "npx playwright test tickets.spec --headed --repeat-each=3 --project=chromium",
+    "test:debug": "npx playwright test --debug",
+    "test:codegen": "npx playwright codegen"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://company@dev.azure.com/company/company/_git/TestesAutomatizados"
+  },
+  "keywords": [],
+  "author": "Lucas Neves",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.13.14",
+    "@babel/eslint-parser": "^7.13.14",
+    "@playwright/test": "^1.27.1",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.0.3",
+    "eslint": "^7.31.0",
+    "faker-br": "^0.4.1",
+    "zip-a-folder": "^1.1.5"
+  }
+}
